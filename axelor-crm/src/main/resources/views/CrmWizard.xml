@@ -9,7 +9,7 @@
 
 		<field name="$records" title="Records" type="one-to-many"
 			widget="OneToMany" colSpan="12" x-target="com.axelor.apps.base.db.Wizard"
-			canNew="false" grid-view="crm-wizard-grid" readonly="true" />
+			canNew="false" grid-view="crm-wizard-grid" readonly="true" canView="false" />
 
 
 	</form>

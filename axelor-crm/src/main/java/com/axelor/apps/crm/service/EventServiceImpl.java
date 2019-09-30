@@ -596,42 +596,38 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public List<Map<String, Object>> getTotalCount() {
-		List<Map<String, Object>> dataMapList = new ArrayList<>();
+
 		List<String> relatedModelList = this.getSelectionOptions("crm.event.related.to.select");
+		return this.getMap(relatedModelList);
+
+	}
+
+	private List<Map<String, Object>> getMap(List<String> relatedModelList) {
+
+		List<Map<String, Object>> dataMapList = new ArrayList<>();
 
 		for (String l : relatedModelList) {
-			dataMapList.add(this.getMap(l));
+			Map<String, Object> dataMap = new HashMap<String, Object>();
+			String modelName = this.getModelName(l);
+			int count = 0;
+			List<Long> list1 = this.getRelatedIds(l);
+
+			if (!list1.isEmpty()) {
+
+				List<Long> list2 = this.getModelIds(l, list1);
+				for (Long l2 : list2) {
+					int temp = Collections.frequency(list1, l2);
+					count = count + temp;
+				}
+
+				count = list1.size() - count;
+
+			}
+			dataMap.put("$relatedToSelect", modelName);
+			dataMap.put("$count", count);
+			dataMapList.add(dataMap);
 		}
 		return dataMapList;
-
-	}
-
-	public List<String> getSelectionOptions(String selection) {
-		List<Option> selectionList = MetaStore.getSelectionList(selection);
-		return selectionList.stream().map(l -> l.getValue()).collect(Collectors.toList());
-	}
-
-	private Map<String, Object> getMap(String relatedModel) {
-		Map<String, Object> dataMap = new HashMap<String, Object>();
-		String modelName = this.getModelName(relatedModel);
-		int count = 0;
-		List<Long> list1 = this.getRelatedIds(relatedModel);
-
-		if (!list1.isEmpty()) {
-
-			List<Long> list2 = this.getModelIds(relatedModel, list1);
-			for (Long l : list2) {
-				int temp = Collections.frequency(list1, l);
-				count = count + temp;
-			}
-
-			count = list1.size() - count;
-
-		}
-		dataMap.put("$relatedToSelect", modelName);
-		dataMap.put("$count", count);
-		return dataMap;
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -641,6 +637,11 @@ public class EventServiceImpl implements EventService {
 		Query query = JPA.em().createQuery(statement);
 		query.setParameter("ids", list);
 		return query.getResultList();
+	}
+
+	public List<String> getSelectionOptions(String selection) {
+		List<Option> selectionList = MetaStore.getSelectionList(selection);
+		return selectionList.stream().map(l -> l.getValue()).collect(Collectors.toList());
 	}
 
 	public String getModelName(String relatedModel) {
