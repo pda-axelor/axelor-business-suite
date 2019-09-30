@@ -232,7 +232,7 @@
 			<field name="campaign" canEdit="false" colSpan="6" form-view="campaign-form"
 				grid-view="campaign-grid" />
 			<field name="relatedToSelect" widget="RefSelect" x-related="relatedToSelectId" />
-			<field name="relatedToSelectId" hidden="true" />
+			<field name="relatedToSelectId" hidden="true" requiredIf="relatedToSelect" />
 			<field name="partner.partnerTypeSelect" hidden="true" />
 		</panel>
 
@@ -284,7 +284,7 @@
 		<view type="form" name="event-form" />
 		<domain>self.typeSelect = 2</domain>
 	</action-view>
-	
+
 	<action-view name="action-view-event-wizard" title="Wizard"
 		model="com.axelor.apps.base.db.Wizard">
 		<view type="form" name="crm-wizard-form" />
@@ -341,12 +341,18 @@
 	</action-group>
 
 	<action-group name="action-event-group-on-save">
+		<action name="action-validate-related-to-id" if="relatedToSelect" />
 		<action name="action-event-record-compute-attendee-list" />
 		<action name="action-event-record-subjectTeam" />
 		<action name="action-event-view-modifications-recurrence" if="recurrenceConfiguration &amp;&amp; id > 0" />
 		<action name="save" />
 		<action name="action-event-method-manage-followers" />
 	</action-group>
+
+	<action-validate name="action-validate-related-to-id">
+		<error message="Specific Record in Related To field must be selected"
+			if="relatedToSelectId == 0" />
+	</action-validate>
 
 	<action-view name="action-event-view-modifications-recurrence"
 		title="Apply modifications" model="com.axelor.apps.base.db.Wizard">
