@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<form name="crm-wizard-form" title="Inconsistency Check"
+		model="com.axelor.apps.base.db.Wizard" onNew="com.axelor.apps.crm.web.EventController:computeTotalCount"
+		readonlyIf="true">
+
+		<field name="$records" title="Records" type="one-to-many"
+			widget="OneToMany" colSpan="12" x-target="com.axelor.apps.base.db.Wizard"
+			canNew="false" grid-view="crm-wizard-grid" readonly="true" />
+
+
+	</form>
+
+	<grid name="crm-wizard-grid" title="Wizard"
+		model="com.axelor.apps.base.db.Wizard" width="mid">
+
+		<field name="$relatedToSelect" title="Related to" type="string" />
+		<field name="$count" title="Count" readonly="true" type="integer" />
+		<button name="Showbtn" title="View Events" icon="fa-eye"
+			onClick="com.axelor.apps.crm.web.EventController:showEvents" />
+		<button name="Removebtn" title="Remove from Events" icon="fa-trash"
+			onClick="com.axelor.apps.crm.web.EventController:removeFromEvents" />
+
+	</grid>
+
+
+</object-views>

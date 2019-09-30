@@ -17,15 +17,18 @@
  */
 package com.axelor.apps.crm.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
 import com.axelor.apps.base.db.Partner;
 import com.axelor.apps.crm.db.Event;
 import com.axelor.apps.crm.db.RecurrenceConfiguration;
 import com.axelor.apps.message.db.EmailAddress;
 import com.axelor.auth.db.User;
 import com.axelor.exception.AxelorException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Map;
+import com.axelor.meta.CallMethod;
 
 public interface EventService {
 
@@ -39,6 +42,7 @@ public interface EventService {
       int type,
       String subject);
 
+  @CallMethod
   String getInvoicingAddressFullName(Partner partner);
 
   void manageFollowers(Event event);
@@ -72,4 +76,10 @@ public interface EventService {
   void generateRecurrentEvents(Event event, RecurrenceConfiguration conf) throws AxelorException;
 
   public EmailAddress getEmailAddress(Event event);
+  
+  public List<Map<String,Object>> getTotalCount();
+  
+  public String getEvents(int selectId);
+  
+  public boolean removeRelatedFromEvents(String eventIds);
 }
