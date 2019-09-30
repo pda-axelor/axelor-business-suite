@@ -33,7 +33,7 @@ public interface LeadService {
    * @return
    * @throws AxelorException
    */
-  @Transactional(rollbackOn = {Exception.class})
+  @Transactional(rollbackOn = {AxelorException.class, Exception.class})
   public Lead convertLead(Lead lead, Partner partner, Partner contactPartner)
       throws AxelorException;
 

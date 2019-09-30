@@ -27,6 +27,6 @@ public interface OpportunityService {
   @Transactional
   public void saveOpportunity(Opportunity opportunity);
 
-  @Transactional(rollbackOn = {Exception.class})
+  @Transactional
   public Partner createClientFromLead(Opportunity opportunity) throws AxelorException;
 }

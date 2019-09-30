@@ -276,6 +276,8 @@ public class ConvertLeadWizardController {
     Map leadMap = (Map) context.get("_lead");
     if (leadMap != null && leadMap.get("id") != null) {
       lead = leadRepo.find(Long.parseLong(leadMap.get("id").toString()));
+    } else {
+      lead = (Lead) context.get("lead");
     }
 
     if (lead == null) {
